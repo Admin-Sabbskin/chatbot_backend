@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const OpenAI = require('openai');
 require('dotenv').config();
 
@@ -12,6 +13,14 @@ const openai = new OpenAI({
 
 app.use(cors());
 app.use(express.json());
+
+// Serve static files (HTML, CSS, JS)
+app.use(express.static(path.join(__dirname)));
+
+// Route to serve the main page
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 app.post('/chat', async (req, res) => {
   const userMessage = req.body.message;
