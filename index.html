@@ -164,8 +164,8 @@
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
 
-        // Backend URL - change this if your backend runs on a different port
-        const BACKEND_URL = 'http://localhost:3000';
+        // Backend URL - will be set automatically for Replit
+        const BACKEND_URL = window.location.origin;
 
         function addMessage(content, isUser = false) {
             const messageDiv = document.createElement('div');

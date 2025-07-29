@@ -11,7 +11,10 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-app.use(cors());
+app.use(cors({
+  origin: ['https://shopify.com', 'https://*.myshopify.com', 'https://admin.shopify.com', /\.myshopify\.com$/],
+  credentials: true
+}));
 app.use(express.json());
 
 // Serve static files (HTML, CSS, JS)
@@ -20,6 +23,11 @@ app.use(express.static(path.join(__dirname)));
 // Route to serve the main page
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Route to serve the Shopify widget
+app.get('/widget', (req, res) => {
+  res.sendFile(path.join(__dirname, 'shopify-widget.html'));
 });
 
 app.post('/chat', async (req, res) => {
