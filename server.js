@@ -37,7 +37,7 @@ app.post('/chat', async (req, res) => {
     const chatResponse = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
-        { role: "system", content: "You are a helpful assistant that answers questions about a Shopify store's products based on website data." },
+        { role: "system", content: "You are a helpful customer service assistant for a Shopify store. You can only answer questions about products, services, shipping, returns, and store policies based on the information available on the website. If you don't have specific information about a product or policy, politely ask the customer to check the website or contact customer service directly. Do not provide information about topics unrelated to the store." },
         { role: "user", content: userMessage }
       ],
     });
@@ -50,6 +50,6 @@ app.post('/chat', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server running on port ${port}`);
 });

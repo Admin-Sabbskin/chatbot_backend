@@ -1,0 +1,127 @@
+<!-- Shopify Chatbot Widget - Add this to your theme.liquid file before </body> -->
+
+<!-- Chatbot Widget Styles -->
+<style>
+  #shopify-chatbot-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+  }
+  
+  #chatbot-toggle-btn {
+    width: 60px;
+    height: 60px;
+    background: #667eea;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 1001;
+  }
+  
+  #chatbot-toggle-btn:hover {
+    background: #5a6fd8;
+    transform: scale(1.05);
+  }
+  
+  #chatbot-iframe-container {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 350px;
+    height: 500px;
+    z-index: 1002;
+    display: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    background: white;
+  }
+  
+  #chatbot-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 12px;
+  }
+  
+  /* Mobile responsive */
+  @media (max-width: 768px) {
+    #chatbot-iframe-container {
+      width: 90vw;
+      height: 70vh;
+      bottom: 90px;
+      right: 5vw;
+    }
+    
+    #shopify-chatbot-widget {
+      bottom: 15px;
+      right: 15px;
+    }
+  }
+</style>
+
+<!-- Chatbot Widget HTML -->
+<div id="shopify-chatbot-widget">
+  <button id="chatbot-toggle-btn" onclick="toggleShopifyChatbot()">
+    <svg width="24" height="24" fill="white" viewBox="0 0 24 24">
+      <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+    </svg>
+  </button>
+  
+  <div id="chatbot-iframe-container">
+    <iframe id="chatbot-iframe" src="YOUR_RENDER_URL_HERE/widget"></iframe>
+  </div>
+</div>
+
+<!-- Chatbot Widget JavaScript -->
+<script>
+  function toggleShopifyChatbot() {
+    const container = document.getElementById('chatbot-iframe-container');
+    const button = document.getElementById('chatbot-toggle-btn');
+    
+    if (container.style.display === 'none' || container.style.display === '') {
+      container.style.display = 'block';
+      button.style.background = '#5a6fd8';
+      
+      // Load iframe content only when opened for the first time
+      const iframe = document.getElementById('chatbot-iframe');
+      if (!iframe.src || iframe.src.includes('YOUR_RENDER_URL_HERE')) {
+        // Replace with your actual Render URL after deployment
+        iframe.src = 'YOUR_RENDER_URL_HERE/widget';
+      }
+    } else {
+      container.style.display = 'none';
+      button.style.background = '#667eea';
+    }
+  }
+  
+  // Close chatbot when clicking outside
+  document.addEventListener('click', function(event) {
+    const widget = document.getElementById('shopify-chatbot-widget');
+    const container = document.getElementById('chatbot-iframe-container');
+    
+    if (widget && container && 
+        !widget.contains(event.target) && 
+        container.style.display === 'block') {
+      container.style.display = 'none';
+      document.getElementById('chatbot-toggle-btn').style.background = '#667eea';
+    }
+  });
+  
+  // Handle escape key to close chatbot
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      const container = document.getElementById('chatbot-iframe-container');
+      if (container && container.style.display === 'block') {
+        container.style.display = 'none';
+        document.getElementById('chatbot-toggle-btn').style.background = '#667eea';
+      }
+    }
+  });
+</script>
